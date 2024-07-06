@@ -55,7 +55,7 @@ function App() {
 
         setTimeout(()=>{
             setPopper(false);
-        },2000)
+        },1000)
 
       } catch (error) {
         console.error("Error posting data:", error);
@@ -126,7 +126,7 @@ function App() {
                 onChange={(e) => {setName(e.target.value);name.length>4?setLength(false):setLength(true)}}
               />
               
-              {length && <p style={{color:'red'}}>Length should be greater than 4</p>}
+              {length && <p style={{color:'red'}}>Length should be greater than 5</p>}
               </div>
               <div style={{width:'100%'}}>
               <TextField
@@ -149,16 +149,18 @@ function App() {
       <header className='header-1'>Navigate your ideal career path with tailored expert advice .<span> Contact Expert</span></header>
       <Navbar />
       <Navigator />
-      <div className='refer-container'>
-        <section style={{ padding: '40px' }}>
-          <h1 style={{ textAlign: 'left', fontSize: '4rvw', color: '#000000' }}>Let's Learn & Earn</h1>
-          <p className='cash-span'>Get a chance to win up-to<span> Rs. 15,000</span></p>
-           {popper && <Player
+      {popper && <Player
             autoplay
             loop
             src={animationData}
             style={{ height: '300px', width: '300px' }}
            />}
+      <div className='refer-container'>
+      
+        <section style={{ padding: '40px' }}>
+          <h1 style={{ textAlign: 'left', fontSize: '4rvw', color: '#000000' }}>Let's Learn & Earn</h1>
+          <p className='cash-span'>Get a chance to win up-to<span> Rs. 15,000</span></p>
+          
           <Button variant="contained" size="medium" onClick={handleOpen} className='button-refer'>
             Refer Now
           </Button>
