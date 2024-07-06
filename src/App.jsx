@@ -4,8 +4,26 @@ import Navbar from './components/Navbar';
 import Navigator from './components/Navigator';
 import { Box, Button, TextField, Modal, Icon } from '@mui/material';
 import ReactVirtualizedTable from './components/referal_benefits';
-import ErrorIcon from '@mui/icons-material/Error';
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+import animationData from './assets/Animation - 1720263497433.json'
+import { Player } from '@lottiefiles/react-lottie-player';
 
+
+const driverObj = driver({
+  showProgress: true,
+  steps: [
+    { element: '.refer-container', popover: { title: 'Welcome to Accredian &#129309', description: 'Here is the code example showing animated tour. Let\'s walk you through it.', side: "left", align: 'start' }},
+    // { element: 'img', popover: { title: 'Import the Library', description: 'It works the same in vanilla JavaScript as well as frameworks.', side: "bottom", align: 'start' }},
+    { element: 'button', popover: { title: 'Join Our Courses &#128366', description: 'Your gateway to premier online programs from India top University .', side: "bottom", align: 'start' }},
+    { element: '.referal-benefits', popover: { title: 'Referals Benefits &#128176&#128176', description: 'See how you can earn through referring your friends', side: "left", align: 'start' }},
+    { element: '.customer-support', popover: { title: 'Customer Support &#128296&#128296', description: 'If you have any Query you can contact our customer support.', side: "right", align: 'start' }},
+    { element: '.button-refer', popover: { title: 'Start Refering &#128181', description: 'Invite your friends to join Accredian and Earn .', side: "top", align: 'start' }},
+    { popover: { title: 'Happy Learning &#128515&#128515', description: 'And that is all, go ahead and start adding friends to Accredian .' } }
+  ]
+});
+
+driverObj.drive();
 
 function App() {
   const [open, setOpen] = useState(false);
@@ -15,14 +33,15 @@ function App() {
   const [email, setEmail] = useState("");
   const [coupon, setCoupon] = useState("SUDA212");
   const [error,setError] = useState(false);
+  const [length,setLength] = useState(false);
+  const [popper,setPopper] = useState(false);
 
   const submitRefer = async (e) => {
 
     e.preventDefault();
-    console.log(name.length)
     if (validateEmail(email) && name.length>4) {
       try {
-        const res = await fetch('http://localhost:3000/refer', {
+        const res = await fetch('https://accerdian-backend.onrender.com/refer', {
           method: "POST",
           mode: "cors",
           headers: {
@@ -30,9 +49,14 @@ function App() {
           },
           body: JSON.stringify({ name, email, coupon }),
         });
-        const ans = await res.json();
+        console.log(res)
         setOpen(false);
-        console.log('Response:', ans);
+        setPopper(true); 
+
+        setTimeout(()=>{
+            setPopper(false);
+        },2000)
+
       } catch (error) {
         console.error("Error posting data:", error);
       }
@@ -43,7 +67,6 @@ function App() {
       }
      
     }
-    
 
   };
 
@@ -81,7 +104,7 @@ function App() {
           <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
             <div style={{ width: '50%' }}>
               <img src='refer.gif' style={{ width: '100%' }} alt="Refer" />
-              <p className='modal-desc' style={{ color: '#000000' }}>Refer Accardian to your friend & encourage them for investing for better future and <span>Earn $20</span> Each</p>
+              <p className='modal-desc' id="modal-desc" style={{ color: '#000000' }}>Refer Accredian to your friend & encourage them for investing for better future and <span>Earn $20</span> Each</p>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '40%' }}>
 
@@ -100,10 +123,10 @@ function App() {
                 label="NAME"
                 variant="outlined"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {setName(e.target.value);name.length>4?setLength(false):setLength(true)}}
               />
               
-              {name.length<=4 && <p style={{color:'red'}}>Length should be greater than 4</p>}
+              {length && <p style={{color:'red'}}>Length should be greater than 4</p>}
               </div>
               <div style={{width:'100%'}}>
               <TextField
@@ -123,21 +146,27 @@ function App() {
         </Box>
       </Modal>
 
-      <header className='H'>Navigate your ideal career path with tailored expert advice .<span> Contact Expert</span></header>
+      <header className='header-1'>Navigate your ideal career path with tailored expert advice .<span> Contact Expert</span></header>
       <Navbar />
       <Navigator />
       <div className='refer-container'>
         <section style={{ padding: '40px' }}>
-          <h1 style={{ textAlign: 'left', fontSize: '4.2rem', color: '#000000' }}>Let's Learn & Earn</h1>
+          <h1 style={{ textAlign: 'left', fontSize: '4rvw', color: '#000000' }}>Let's Learn & Earn</h1>
           <p className='cash-span'>Get a chance to win up-to<span> Rs. 15,000</span></p>
-          <Button variant="contained" size="medium" onClick={handleOpen}>
+           {popper && <Player
+            autoplay
+            loop
+            src={animationData}
+            style={{ height: '300px', width: '300px' }}
+           />}
+          <Button variant="contained" size="medium" onClick={handleOpen} className='button-refer'>
             Refer Now
           </Button>
         </section>
         <img src='Anniversary (7) 1.png' style={{ width: '50%' }} alt="Anniversary" />
         <img src='Anniversary (8) 1.png' className='img-money1' alt="Anniversary" />
         <img src='Anniversary (8) 1.png' className='img-money2' alt="Anniversary" />
-        <img src='Anniversary (8) 1.png' className='img-money3' alt="Anniversary" />
+        {/* <img src='Anniversary (8) 1.png' className='img-money3' alt="Anniversary" /> */}
         <img src='Anniversary (8) 1.png' className='img-money4' alt="Anniversary" />
         <img src='Anniversary (8) 1.png' className='img-money5' alt="Anniversary" />
       </div>
@@ -168,7 +197,7 @@ function App() {
         <div>
           <ReactVirtualizedTable />
         </div>
-        <Button variant="contained" size="medium" onClick={handleOpen} sx={{margin:'40px'}}>
+        <Button variant="contained" size="medium" onClick={handleOpen} sx={{margin:'40px'}} >
           Refer Now
         </Button>
       </section>
@@ -177,8 +206,12 @@ function App() {
         <img src='div.cta-grad.png' className='img-4' alt="Customer support background" />
       </section>
       <img src='Background.png' style={{ width: '100%', margin: 'auto' }} alt="Background" />
+     
+      {/* <dotlottie-player src="https://lottie.host/1da41bf7-8d6f-4079-a087-1c2c1155fcf2/e8dj26Shaq.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player> */}
     </>
   )
 }
 
 export default App;
+
+
