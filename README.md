@@ -9,21 +9,25 @@ Currently, two official plugins are available:
 
 Getting started:
 
-     If you are correctly in the folder which you are using to create vite
+If you are correctly in the folder which you are using to create vite
 
 1.clone the repo using the ssh/http protocol into your folder/ download the zip folder and open in code editor and cd folder_name
 
-2. npm install
+     npm install
+     
+(for non production code)
+      
+      npm run dev 
 
-3. npm run dev (for non production code)
+If you are creating new project through vite
 
-     If you are creating new project through vite
+     npm create vite@latest my-vue-app -- --template vue
 
-1. npm create vite@latest my-vue-app -- --template vue
+    npm install
 
-2. npm install
+(for non production code)
 
-3. npm run dev (for non production code)
+     npm run dev 
 
 
 Pros:
